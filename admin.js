@@ -1,0 +1,5 @@
+function getNews(){try{return JSON.parse(localStorage.getItem('bebakNews'))||[]}catch(e){return[]}}
+function saveNews(n){localStorage.setItem('bebakNews',JSON.stringify(n))}
+function publish(){const title=document.getElementById('title').value.trim(),body=document.getElementById('body').value.trim(),category=document.getElementById('category').value,breaking=document.getElementById('breaking').checked;if(!title||!body){alert('शीर्षक और खबर का विवरण भरें।');return}const n=getNews();n.unshift({title,body,category,breaking});saveNews(n);document.getElementById('title').value='';document.getElementById('body').value='';document.getElementById('breaking').checked=false;renderAdmin();alert('खबर प्रकाशित हो गई।')}
+function renderAdmin(){const box=document.getElementById('adminList');box.innerHTML=getNews().map((n,i)=>`<div class="card"><b>${n.title}</b><div class="meta">${n.category}</div><button onclick="del(${i})">हटाएं</button></div>`).join('')}
+function del(i){const n=getNews();n.splice(i,1);saveNews(n);renderAdmin()}renderAdmin();
