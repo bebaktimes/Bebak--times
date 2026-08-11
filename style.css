@@ -1,1 +1,221 @@
-*{box-sizing:border-box}body{margin:0;background:#f4f4f4;color:#171717;font-family:Arial,'Noto Sans Devanagari',sans-serif}.top{background:#111;color:#fff;padding:8px 5%;font-size:13px}.brand{background:#fff;padding:20px 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:4px solid #c40000}.brand strong{font-size:40px;color:#c40000}.brand span{color:#111}.brand small{color:#666}nav{background:#111;padding:0 5%;overflow:auto;white-space:nowrap}nav a{display:inline-block;color:white;padding:13px 15px;text-decoration:none}nav a:hover{background:#c40000}.breaking{background:#c40000;color:#fff;padding:10px 5%}.breaking b{background:#111;padding:7px 10px;margin-right:8px}main{max-width:1100px;margin:25px auto;padding:0 15px}.hero{min-height:290px;padding:30px;display:flex;flex-direction:column;justify-content:end;background:linear-gradient(135deg,#222,#777);color:#fff;margin-bottom:25px}.hero span{background:#c40000;padding:5px 9px;width:max-content;font-size:12px}.hero h1{font-size:34px;margin:12px 0}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.card,.panel{background:#fff;border:1px solid #ddd;padding:18px}.card h3{line-height:1.45}.meta{color:#777;font-size:12px}label{display:block;margin:15px 0;font-weight:bold}input,select,textarea{width:100%;padding:11px;margin-top:6px;border:1px solid #ccc}textarea{min-height:180px}button{background:#c40000;color:white;border:0;padding:12px 20px;font-weight:bold;cursor:pointer}.back{display:block;margin-top:15px;color:#c40000}.panel{margin-bottom:20px}footer{margin-top:40px;background:#111;color:#ddd;padding:30px 5%;text-align:center}@media(max-width:700px){.brand strong{font-size:30px}.cards{grid-template-columns:1fr}.hero h1{font-size:26px}}
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, "Noto Sans Devanagari", sans-serif;
+  background: #f5f5f5;
+  color: #171717;
+}
+
+.top {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.brand {
+  background: #fff;
+  padding: 18px;
+  text-align: center;
+}
+
+.brand strong {
+  font-size: 34px;
+}
+
+.brand span {
+  color: #c40000;
+}
+
+.brand small {
+  display: block;
+  color: #666;
+  margin-top: 4px;
+}
+
+nav {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  background: #c40000;
+  padding: 11px 14px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.breaking {
+  background: #ffe5e5;
+  padding: 12px 15px;
+  border-bottom: 1px solid #e4b0b0;
+}
+
+.breaking b {
+  background: #c40000;
+  color: #fff;
+  padding: 5px 8px;
+  margin-right: 8px;
+}
+
+main {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0 14px;
+}
+
+.hero {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px;
+  margin-bottom: 24px;
+  border-left: 6px solid #c40000;
+}
+
+.hero span,
+.tag {
+  background: #c40000;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin: 14px 0 8px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card,
+.panel {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  box-shadow: 0 2px 10px #00000012;
+}
+
+.card img {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.card h3 {
+  font-size: 22px;
+  margin: 10px 0;
+}
+
+.card small {
+  color: #666;
+}
+
+.admin {
+  max-width: 900px;
+}
+
+.adminbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.panel {
+  margin-bottom: 24px;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  margin: 14px 0;
+}
+
+input,
+select,
+textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.check input {
+  width: auto;
+  margin: 0;
+}
+
+button {
+  background: #c40000;
+  color: #fff;
+  border: 0;
+  border-radius: 6px;
+  padding: 11px 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary {
+  background: #333;
+}
+
+.danger {
+  background: #8b0000;
+}
+
+.msg {
+  font-weight: 700;
+}
+
+.hidden {
+  display: none;
+}
+
+footer {
+  text-align: center;
+  padding: 30px;
+  background: #111;
+  color: #fff;
+  margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+
+  .brand strong {
+    font-size: 27px;
+  }
+
+  .hero h1 {
+    font-size: 25px;
+  }
+
+  .adminbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+}
