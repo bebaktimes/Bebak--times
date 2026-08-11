@@ -10,6 +10,61 @@
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .share-box {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid #ddd;
+    }
+
+    .share-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .share-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .share-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      color: #fff;
+      text-decoration: none;
+      border: 0;
+      border-radius: 7px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .whatsapp {
+      background: #25D366;
+    }
+
+    .facebook {
+      background: #1877F2;
+    }
+
+    .twitter {
+      background: #111;
+    }
+
+    .instagram {
+      background: #C13584;
+    }
+
+    .copy {
+      background: #555;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -100,7 +155,6 @@ async function loadArticle() {
       "<h2>खबर नहीं मिली</h2>";
 
     return;
-
   }
 
 
@@ -122,7 +176,6 @@ async function loadArticle() {
       "<h2>यह खबर उपलब्ध नहीं है।</h2>";
 
     return;
-
   }
 
 
@@ -178,62 +231,135 @@ async function loadArticle() {
         .replace(/\n/g, "<br>")}
     </div>
 
-    <div
-      style="
-        margin-top:25px;
-        display:flex;
-        gap:10px;
-        flex-wrap:wrap;
-      "
-    >
 
-      <button onclick="shareNews()">
+    <div class="share-box">
+
+      <div class="share-title">
         📤 खबर शेयर करें
-      </button>
+      </div>
 
-      <button
-        class="secondary"
-        onclick="copyLink()"
-      >
-        🔗 लिंक कॉपी करें
-      </button>
+      <div class="share-buttons">
+
+        <a
+          id="whatsappBtn"
+          class="share-btn whatsapp"
+          target="_blank"
+          rel="noopener"
+        >
+          🟢 WhatsApp
+        </a>
+
+        <a
+          id="facebookBtn"
+          class="share-btn facebook"
+          target="_blank"
+          rel="noopener"
+        >
+          🔵 Facebook
+        </a>
+
+        <a
+          id="twitterBtn"
+          class="share-btn twitter"
+          target="_blank"
+          rel="noopener"
+        >
+          ⚫ X / Twitter
+        </a>
+
+        <button
+          class="share-btn instagram"
+          onclick="instagramShare()"
+        >
+          🟣 Instagram
+        </button>
+
+        <button
+          class="share-btn copy"
+          onclick="copyLink()"
+        >
+          🔗 लिंक कॉपी करें
+        </button>
+
+      </div>
+
+      <p
+        id="shareMsg"
+        class="msg"
+      ></p>
 
     </div>
 
-    <p
-      id="shareMsg"
-      class="msg"
-    ></p>
-
   `;
+
+
+  setupShareButtons(
+    data.title
+  );
 
 }
 
 
-async function shareNews() {
+function setupShareButtons(title) {
 
   const url =
     window.location.href;
 
-  const title =
-    document.title;
+
+  const text =
+    title +
+    "\n\nबेबाक टाइम्स पर पूरी खबर पढ़ें:";
 
 
-  if (navigator.share) {
+  document.getElementById(
+    "whatsappBtn"
+  ).href =
+    "https://wa.me/?text=" +
+    encodeURIComponent(
+      text + "\n" + url
+    );
 
-    try {
 
-      await navigator.share({
-        title: title,
-        text: title,
-        url: url
-      });
+  document.getElementById(
+    "facebookBtn"
+  ).href =
+    "https://www.facebook.com/sharer/sharer.php?u=" +
+    encodeURIComponent(url);
 
-    } catch (e) {}
 
-  } else {
+  document.getElementById(
+    "twitterBtn"
+  ).href =
+    "https://twitter.com/intent/tweet?text=" +
+    encodeURIComponent(text) +
+    "&url=" +
+    encodeURIComponent(url);
 
-    await copyLink();
+}
+
+
+async function instagramShare() {
+
+  const url =
+    window.location.href;
+
+  try {
+
+    await navigator.clipboard.writeText(
+      url
+    );
+
+    document.getElementById(
+      "shareMsg"
+    ).textContent =
+      "✅ लिंक कॉपी हो गया। Instagram खोलकर इसे अपनी Story/Bio/पोस्ट में शेयर कर सकते हैं।";
+
+  } catch (e) {
+
+    prompt(
+      "Instagram पर शेयर करने के लिए यह लिंक कॉपी करें:",
+      url
+    );
 
   }
 
@@ -254,7 +380,7 @@ async function copyLink() {
     document.getElementById(
       "shareMsg"
     ).textContent =
-      "✅ खबर का लिंक कॉपी हो गया। अब WhatsApp/Facebook पर शेयर कर सकते हैं।";
+      "✅ खबर का लिंक कॉपी हो गया।";
 
   } catch (e) {
 
