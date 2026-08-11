@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="hi">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>बेबाक टाइम्स</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<header>
+
+  <div class="top">
+    भारत का डिजिटल हिंदी न्यूज पोर्टल
+  </div>
+
+  <div class="brand">
+    <strong>बेबाक <span>टाइम्स</span></strong>
+    <small>सच के साथ • बिना लाग-लपेट</small>
+  </div>
+
+  <nav>
+    <a href="index.html">होम</a>
+    <a href="index.html#national">राष्ट्रीय</a>
+    <a href="index.html#maharashtra">महाराष्ट्र</a>
+    <a href="index.html#politics">राजनीति</a>
+    <a href="index.html#crime">क्राइम</a>
+    <a href="index.html#business">बिजनेस</a>
+    <a href="index.html#sports">खेल</a>
+    <a href="index.html#entertainment">मनोरंजन</a>
+  </nav>
+
+</header>
+
+
+<main>
+
+  <article id="article" class="panel">
+
+    <p>खबर लोड हो रही है...</p>
+
+  </article>
+
+</main>
+
+
+<footer>
+  © 2026 बेबाक टाइम्स — सर्वाधिकार सुरक्षित
+</footer>
+
+
+<script>
+
+const SUPABASE_URL =
+  "https://drhvsfuvifnhdtxsfyai.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_2hW_8MXdWQI2ry0-mXgraQ_GQU_4xL7";
+
+const db =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+const esc = (s) =>
+  String(s ?? "").replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  }[c]));
+
+
+async function loadArticle() {
+
+  const box =
+    document.getElementById("article");
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const id =
+    params.get("id");
+
+
+  if (!id) {
+
+    box.innerHTML =
+      "<h2>खबर नहीं मिली</h2>";
+
+    return;
+
+  }
+
+
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("news")
+      .select("*")
+      .eq("id", id)
+      .eq("published", true)
+      .single();
+
+
+  if (error || !data) {
+
+    box.innerHTML =
+      "<h2>यह खबर उपलब्ध नहीं है।</h2>";
+
+    return;
+
+  }
+
+
+  document.title =
+    data.title + " | बेबाक टाइम्स";
+
+
+  box.innerHTML = `
+
+    ${
+      data.is_breaking
+        ? `<span class="tag">BREAKING NEWS</span>`
+        : ""
+    }
+
+    <small>
+      ${esc(data.category)}
+      •
+      ${new Date(
+        data.created_at
+      ).toLocaleString("hi-IN")}
+    </small>
+
+    <h1>
+      ${esc(data.title)}
+    </h1>
+
+    ${
+      data.image_url
+        ? `
+          <img
+            src="${esc(data.image_url)}"
+            alt="${esc(data.title)}"
+            style="
+              width:100%;
+              max-height:520px;
+              object-fit:cover;
+              border-radius:10px;
+              margin:15px 0;
+            "
+          >
+        `
+        : ""
+    }
+
+    <div
+      style="
+        font-size:18px;
+        line-height:1.8;
+      "
+    >
+      ${esc(data.content)
+        .replace(/\n/g, "<br>")}
+    </div>
+
+    <div
+      style="
+        margin-top:25px;
+        display:flex;
+        gap:10px;
+        flex-wrap:wrap;
+      "
+    >
+
+      <button onclick="shareNews()">
+        📤 खबर शेयर करें
+      </button>
+
+      <button
+        class="secondary"
+        onclick="copyLink()"
+      >
+        🔗 लिंक कॉपी करें
+      </button>
+
+    </div>
+
+    <p
+      id="shareMsg"
+      class="msg"
+    ></p>
+
+  `;
+
+}
+
+
+async function shareNews() {
+
+  const url =
+    window.location.href;
+
+  const title =
+    document.title;
+
+
+  if (navigator.share) {
+
+    try {
+
+      await navigator.share({
+        title: title,
+        text: title,
+        url: url
+      });
+
+    } catch (e) {}
+
+  } else {
+
+    await copyLink();
+
+  }
+
+}
+
+
+async function copyLink() {
+
+  const url =
+    window.location.href;
+
+  try {
+
+    await navigator.clipboard.writeText(
+      url
+    );
+
+    document.getElementById(
+      "shareMsg"
+    ).textContent =
+      "✅ खबर का लिंक कॉपी हो गया। अब WhatsApp/Facebook पर शेयर कर सकते हैं।";
+
+  } catch (e) {
+
+    prompt(
+      "यह लिंक कॉपी करें:",
+      url
+    );
+
+  }
+
+}
+
+
+loadArticle();
+
+</script>
+
+</body>
+</html>
