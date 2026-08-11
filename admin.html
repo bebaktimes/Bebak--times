@@ -1,3 +1,283 @@
-<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin — बेबाक टाइम्स</title><link rel="stylesheet" href="style.css"></head><body>
-<header><div class="brand"><strong>बेबाक <span>टाइम्स</span></strong><small>Admin Dashboard</small></div></header>
-<main><div class="panel"><h1>नई खबर प्रकाशित करें</h1><label>शीर्षक<input id="title"></label><label>श्रेणी<select id="category"><option>राष्ट्रीय</option><option>महाराष्ट्र</option><option>राजनीति</option><option>क्राइम</option><option>बिजनेस</option><option>खेल</option><option>मनोरंजन</option></select></label><label>खबर का विवरण<textarea id="body"></textarea></label><label><input type="checkbox" id="breaking"> Breaking News</label><button onclick="publish()">खबर प्रकाशित करें</button><a class="back" href="index.html">← वेबसाइट पर जाएं</a></div><div class="panel"><h2>प्रकाशित खबरें</h2><div id="adminList"></div></div></main><script src="admin.js"></script></body></html>
+<!doctype html>
+<html lang="hi">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta name="viewport"
+        content="width=device-width,initial-scale=1">
+
+  <title>Admin — बेबाक टाइम्स</title>
+
+  <link rel="stylesheet"
+        href="style.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <div class="top">
+    बेबाक टाइम्स — Admin Panel
+  </div>
+
+  <div class="brand">
+
+    <strong>
+      बेबाक <span>टाइम्स</span>
+    </strong>
+
+    <small>
+      न्यूज मैनेजमेंट
+    </small>
+
+  </div>
+
+
+  <nav>
+
+    <a href="index.html">
+      ← वेबसाइट
+    </a>
+
+  </nav>
+
+</header>
+
+
+
+<main class="admin">
+
+
+  <!-- LOGIN -->
+
+  <div id="loginBox"
+       class="panel">
+
+    <h2>
+      Admin Login
+    </h2>
+
+
+    <form id="loginForm">
+
+
+      <label>
+
+        ईमेल
+
+        <input
+          id="email"
+          type="email"
+          required
+          autocomplete="username">
+
+      </label>
+
+
+
+      <label>
+
+        पासवर्ड
+
+        <input
+          id="password"
+          type="password"
+          required
+          autocomplete="current-password">
+
+      </label>
+
+
+      <button type="submit">
+        Login
+      </button>
+
+
+      <p id="loginMsg"
+         class="msg">
+      </p>
+
+
+    </form>
+
+  </div>
+
+
+
+  <!-- ADMIN PANEL -->
+
+  <div id="adminBox"
+       class="hidden">
+
+
+    <div class="adminbar">
+
+      <h2>
+        नई खबर प्रकाशित करें
+      </h2>
+
+      <button
+        id="logoutBtn"
+        class="secondary">
+
+        Logout
+
+      </button>
+
+    </div>
+
+
+
+    <div class="panel">
+
+
+      <form id="newsForm">
+
+
+        <label>
+
+          खबर की हेडलाइन
+
+          <input
+            id="title"
+            maxlength="180"
+            required>
+
+        </label>
+
+
+
+        <label>
+
+          श्रेणी
+
+          <select id="category">
+
+            <option>राष्ट्रीय</option>
+
+            <option>महाराष्ट्र</option>
+
+            <option>राजनीति</option>
+
+            <option>क्राइम</option>
+
+            <option>बिजनेस</option>
+
+            <option>खेल</option>
+
+            <option>मनोरंजन</option>
+
+            <option>अन्य</option>
+
+          </select>
+
+        </label>
+
+
+
+        <label>
+
+          खबर / विवरण
+
+          <textarea
+            id="content"
+            rows="8"
+            required>
+          </textarea>
+
+        </label>
+
+
+
+        <label>
+
+          फोटो URL
+
+          <small>
+            अभी सीधे Image URL डाल सकते हैं।
+          </small>
+
+          <input
+            id="image_url"
+            type="url"
+            placeholder="https://...">
+
+        </label>
+
+
+
+        <label class="check">
+
+          <input
+            id="is_breaking"
+            type="checkbox">
+
+          Breaking News
+
+        </label>
+
+
+
+        <label class="check">
+
+          <input
+            id="published"
+            type="checkbox"
+            checked>
+
+          तुरंत Publish करें
+
+        </label>
+
+
+
+        <button type="submit">
+
+          खबर Publish करें
+
+        </button>
+
+
+        <p id="formMsg"
+           class="msg">
+        </p>
+
+
+      </form>
+
+
+    </div>
+
+
+
+    <h2>
+      आपकी प्रकाशित खबरें
+    </h2>
+
+
+    <div
+      id="adminNews"
+      class="cards">
+    </div>
+
+
+  </div>
+
+
+</main>
+
+
+
+<script src="admin.js"></script>
+
+</body>
+
+</html>
